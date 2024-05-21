@@ -1,0 +1,22 @@
+<style>
+    p{
+        font-size: 25px;
+    }
+    h6#ans{
+        margin-bottom: 0rem;
+    }
+</style>
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+        <h1>問題</h1>
+        <p>{{ question }}</p>
+
+
+        <form action="/TorF" method="post">
+            <h6 id="ans">解答</h6>
+            <input name="response"></input>
+            <button type="submit">送信</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+<style>
+
+    h1.result{
+        margin-top: 200px;
+        text-align: center;
+    }
+</style>
+{% extends "layout.html" %}
+{% block content %}
+    <style>
+    </style>
+    <div class="container">
+        {% if result %}
+            <h1 class="result">正解</h1>
+        {% else %}
+            <h1 class="result">不正解</h1>
+        {% endif %}
+    </div>
+<!--    <script src="{{ url_for('static', filename='javascript/sample.js') }}"></script> -->
+{% endblock %}   

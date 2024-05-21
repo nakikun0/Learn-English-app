@@ -1,0 +1,33 @@
+<style>
+    table {
+  border: 1px solid #000;
+}
+
+table th {
+  border: 1px solid #000;
+}
+
+table td {
+  border: 1px solid #000;
+}
+</style>
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+        <h1>単語確認</h1>
+        <table width="250">
+            <tr>
+                <th>英語</th>
+                <th>日本語</th>
+            </tr>
+            {% for word in En %}
+                <tr>            
+                    <td>{{ word }}</td>
+                    <td>{{ mydict[word] }}</td>
+                </tr>            
+            {% endfor %}
+
+        </table>
+
+    </div>
+{% endblock %}

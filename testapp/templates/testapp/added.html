@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <h1>追加完了</h1>
+    <h2>さらに追加しますか?</h2>
+    <ul>
+        <li>
+            <form action="/add" method="get">
+                <input type="submit" value='続行する'>
+            </form>
+            <p>追加フォームに戻ります</p>
+        </li>
+        <br>
+        <li>
+            <form action="/" method="get">
+                <input type="submit" value='終了する'>
+            </form>
+            <p>ホームに戻ります</p>
+        </li>
+    </ul>
+
+</div>
+{% endblock %}

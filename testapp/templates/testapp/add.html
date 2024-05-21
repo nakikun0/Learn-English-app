@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+        <h1>単語追加</h1>
+        <form action="/added" method="POST">
+            <input name="data1"></input>
+            <button type="submit">送信</button>
+        </form>
+        <p>英語(半角スペース)日本語で入力してください</p>
+        <p>&lt;例&gt;English 英語</p>
+    </div>
+{% endblock %}

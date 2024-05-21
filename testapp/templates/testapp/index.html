@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+    <style>
+        ul{
+            padding-left: 0;
+        }
+        li {
+            list-style: none;
+            font-size: 23px;
+            margin-bottom: 5px;
+        }
+        a{
+            text-decoration: none;
+        } 
+    </style>
+    <div class="container">
+        <h1>Dictionary App</h1>
+        <ul>
+            <li><a href="/add" target="_self">単語を追加する</a></li>
+            <li><a href="/check" target="_self">単語を確認する</a></li>
+            <li><a href="/question" target="_self">単語テスト</a></li>
+        </ul>
+
+    </div>
+<!--    <script src="{{ url_for('static', filename='javascript/sample.js') }}"></script> -->
+{% endblock %}   
