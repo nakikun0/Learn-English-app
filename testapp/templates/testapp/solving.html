@@ -10,7 +10,7 @@
 {% block content %}
     <div class="container">
         <h1>問題</h1>
-        <p>{{ question }}</p>
+        <p></p>
 
 
         <form action="/TorF" method="post">
@@ -19,4 +19,40 @@
             <button type="submit">送信</button>
         </form>
     </div>
+
+<script>
+    let num = {{ num }};
+    let dictData = {{ dictData|tojson }};  //|tojsonで辞書を扱える
+    let selectedNums = [];
+    let selectedNum = 0;
+    let questions = {};
+    let questionsEn = [];
+    let EnData = Object.keys(dictData); //keyのみをリストとして取得
+    let questionNum = 0;
+
+    function setQuestions(){
+        for(let i=0;i<num;i++){
+
+            while(selectedNums.includes(selectedNum)){
+                selectedNum = Math.floor(Math.random()*EnData.length);
+            }
+                questions[EnData[selectedNum]] = dictData[EnData[selectedNum]];
+                questionsEn.push(EnData[selectedNum]);
+                selectedNums.push(selectedNum);
+        }
+    }
+
+    function displayQuestion(questionNum){
+
+
+    }
+
+    setQuestions();
+
+
+    console.log(selectedNums,questions,questionsEn);
+    console.log(dictData);
+
+</script>
+
 {% endblock %}
