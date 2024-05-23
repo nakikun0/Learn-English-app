@@ -8,9 +8,19 @@ import pprint
 
 mydict = reader()
 En = []
-for word in mydict:
-    En.append(word)
-print(En)
+
+
+def readLatestData():
+    global mydict
+    global En
+    mydict = reader()
+    En = []
+    for word in mydict:
+        En.append(word)
+    print(En)
+
+
+readLatestData()
 
 
 @app.route('/')
@@ -30,6 +40,7 @@ def wordadded():
     datas = data.split(' ')  # 英語と日本語でセパレート
     mydict[datas[0]] = datas[1]
     saver(mydict)
+    readLatestData()
     return render_template('testapp/added.html')
 
 
@@ -40,7 +51,7 @@ def checkword():
 
 
 @app.route('/question', methods=["POST", "GET"])
-def solvequestions():
+def solveQuestions():
     maxNum = len(En)
     print(maxNum)
     return render_template('testapp/question.html', max=maxNum)
@@ -48,9 +59,13 @@ def solvequestions():
 
 @app.route('/rand_q', methods=["POST", "GET"])
 def solving():
-    num = request.form['questionNum']
-    print(num)
-    return render_template('testapp/solving.html', num=num, dictData=mydict)
+    tempNum = 0
+    num = request.form.get(
+        'questionNum')  # btnを押すたびにsolvingが実行されるため，questionNumが取得できずエラーになる．
+    if num is not None:
+        tempNum = num
+
+    return render_template('testapp/solving.html', num=tempNum, dictData=mydict)
 
 
 @app.route('/TorF', methods=['post'])

@@ -10,13 +10,13 @@
 {% block content %}
     <div class="container">
         <h1>問題</h1>
-        <p></p>
+        <h1 id="question"></h1>
 
 
-        <form action="/TorF" method="post">
+        <form id="form">
             <h6 id="ans">解答</h6>
-            <input name="response"></input>
-            <button type="submit">送信</button>
+            <input id="response" name="response"></input>
+            <button id="resBtn" type="submit">送信</button>
         </form>
     </div>
 
@@ -28,30 +28,55 @@
     let questions = {};
     let questionsEn = [];
     let EnData = Object.keys(dictData); //keyのみをリストとして取得
-    let questionNum = 0;
+    let QonDisplay = document.getElementById("question");
+    let response = document.getElementById("response");
+    let resBtn = document.getElementById("resBtn");
+    let questionIndex = 0;
+    var score = 0;
 
     function setQuestions(){
         for(let i=0;i<num;i++){
-
+                selectedNum = Math.floor(Math.random()*EnData.length)
             while(selectedNums.includes(selectedNum)){
                 selectedNum = Math.floor(Math.random()*EnData.length);
+                console.log("selectedNum is:",selectedNum);
             }
                 questions[EnData[selectedNum]] = dictData[EnData[selectedNum]];
                 questionsEn.push(EnData[selectedNum]);
                 selectedNums.push(selectedNum);
+                console.log("selectedNums is:",selectedNums);
         }
     }
 
-    function displayQuestion(questionNum){
-
-
+    function displayQuestion(){
+        question.textContent = questionsEn[questionIndex];
+        questionIndex += 1;
     }
 
+    //onloadfunction
     setQuestions();
+    displayQuestion();
 
+    document.getElementById('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let response = document.getElementById('response').value;
 
-    console.log(selectedNums,questions,questionsEn);
+        if(response == questions[question.textContent]){
+            console.log("正解");
+            score++;
+        }else{
+            console.log("不正解");
+        }
+        console.log("User response:", response,question.textContent);
+        response = "";
+        // 必要に応じて他の処理を追加
+    });
+
+    console.log("iroiro",selectedNums,questions,questionsEn);
     console.log(dictData);
+
+
+
 
 </script>
 

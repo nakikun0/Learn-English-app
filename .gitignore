@@ -1,7 +1,7 @@
 /.idea/
 /__pycache__/
-testapp/__pycache__/
+/testapp/__pycache__/
 /*.pyc/
-.env
-env
+*.env
+/env/
 /*.csv/
