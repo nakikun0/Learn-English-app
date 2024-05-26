@@ -10,10 +10,14 @@
     <style>
     </style>
     <div class="container">
-        {% if result %}
-            <h1 class="result">正解</h1>
-        {% else %}
-            <h1 class="result">不正解</h1>
+        <h3>あなたの点数は</h3>
+        <h2>{{ accuracy }}点</h2>
+        {% if accuracy >= 75 %}
+            <img src="{{ url_for('static', filename='images/DicGOOD.png') }}" alt="DicGOOD" height="175">
+        {% elif 70 > accuracy >= 40 %}
+            <img src="{{ url_for('static', filename='images/DicSoso.png') }}" alt="DicSoso" height="175">
+        {% elif accuracy < 40 %}
+            <img src="{{ url_for('static', filename='images/DicBad.png') }}" alt="DicBad" height="175">
         {% endif %}
     </div>
 <!--    <script src="{{ url_for('static', filename='javascript/sample.js') }}"></script> -->

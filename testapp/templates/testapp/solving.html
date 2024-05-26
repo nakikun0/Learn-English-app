@@ -8,21 +8,34 @@
 </style>
 {% extends "layout.html" %}
 {% block content %}
-    <div class="container">
+    <div id="questionDisplay" class="container" style="display:block">
         <h1>問題</h1>
         <h1 id="question"></h1>
+        <h6 id="ans">解答</h6>
+        <input type="text" id="response" name="response">
+        <button id="resBtn">送信</button>
+    </div>
 
+    <div id="ansDisplay" class="container" style="display:none">
+            <h1 id="TorFDisplay"></h1>
+            <h1 id="answer"></h1>
+            <button id="nextBtn">次の問題へ</button>
+    </div>
 
-        <form id="form">
-            <h6 id="ans">解答</h6>
-            <input id="response" name="response"></input>
-            <button id="resBtn" type="submit">送信</button>
+    <!-- 最後の送信だけリザルトページに飛ばすためformを用いる -->
+    <div id="finDisplay" class="container" style="display:none;">
+        <form id="toFin" action="/result" method="POST">
+            <h1 id="lastTorFDisplay"></h1>
+            <h1 id="lastAnswer"></h1>
+            <input type="hidden" id="CorrectCount" name="CorrectCount">
+            <input type="hidden" id="questionNum" name="questionNum">
+            <button id="FinBtn">終了</button>
         </form>
     </div>
 
 <script>
-    let num = {{ num }};
-    let dictData = {{ dictData|tojson }};  //|tojsonで辞書を扱える
+    const num = {{ num }};
+    const dictData = {{ dictData|tojson }};  //|tojsonで辞書を扱える
     let selectedNums = [];
     let selectedNum = 0;
     let questions = {};
@@ -30,52 +43,84 @@
     let EnData = Object.keys(dictData); //keyのみをリストとして取得
     let QonDisplay = document.getElementById("question");
     let response = document.getElementById("response");
-    let resBtn = document.getElementById("resBtn");
     let questionIndex = 0;
     var score = 0;
+    let QDisplay = document.getElementById("questionDisplay");
+    let ADisplay = document.getElementById("ansDisplay");
 
+
+    //出題される問題のリストを生成する関数
     function setQuestions(){
         for(let i=0;i<num;i++){
-                selectedNum = Math.floor(Math.random()*EnData.length)
+            selectedNum = Math.floor(Math.random()*EnData.length)
             while(selectedNums.includes(selectedNum)){
                 selectedNum = Math.floor(Math.random()*EnData.length);
-                console.log("selectedNum is:",selectedNum);
             }
-                questions[EnData[selectedNum]] = dictData[EnData[selectedNum]];
-                questionsEn.push(EnData[selectedNum]);
-                selectedNums.push(selectedNum);
-                console.log("selectedNums is:",selectedNums);
+            questions[EnData[selectedNum]] = dictData[EnData[selectedNum]];
+            questionsEn.push(EnData[selectedNum]);
+            selectedNums.push(selectedNum);
+            console.log("selectedNums is:",selectedNums);
         }
     }
 
+    //問題を実際に映す関数
     function displayQuestion(){
         question.textContent = questionsEn[questionIndex];
         questionIndex += 1;
+        QDisplay.style.display = "block";
+        ADisplay.style.display = "none";
     }
 
-    //onloadfunction
+    //解答画面の文字を変更する関数 (最後の送信と途中でdivを変えたため)
+    function changeText(TorFId, TorF, AnsId, answer){
+        if(TorF)
+            document.getElementById(TorFId).textContent = "正解";
+        else
+            document.getElementById(TorFId).textContent = "不正解";
+        document.getElementById(AnsId).textContent = answer;
+    }
+
+    //解答画面を映す関数
+    function displayAnswer(TorF, answer){
+        QDisplay.style.display = "none";
+        if(questionIndex+1 > num){
+            changeText("lastTorFDisplay", TorF, "lastAnswer", answer);
+            CorrectCount.value = score;
+            console.log(score, CorrectCount);
+            ADisplay.style.display = "none";
+            document.getElementById("finDisplay").style.display = "block";
+        }else{
+            changeText("TorFDisplay", TorF, "answer", answer);
+            QDisplay.style.display = "none";
+            ADisplay.style.display = "block";
+        }
+    }
+
+    //ロード時に実行される
     setQuestions();
     displayQuestion();
+    document.getElementById("questionNum").value = num;
 
-    document.getElementById('form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        let response = document.getElementById('response').value;
-
+    //回答を送信したときの動作
+    document.getElementById('resBtn').addEventListener('click', () => {
+        let responseElement = document.getElementById('response');
+        let response = responseElement.value;       //responseElement.valueの値をコピーしたもの
+        let TorF;
         if(response == questions[question.textContent]){
-            console.log("正解");
+            TorF = true;
             score++;
         }else{
-            console.log("不正解");
+            TorF = false;
         }
-        console.log("User response:", response,question.textContent);
-        response = "";
-        // 必要に応じて他の処理を追加
+        //console.log("response and question:", response,question.textContent);
+        responseElement.value = "";     //テキストボックス要素の値を直接操作するためのプロパティ(実質参照渡し)
+        displayAnswer(TorF, questions[question.textContent]);
     });
 
-    console.log("iroiro",selectedNums,questions,questionsEn);
-    console.log(dictData);
-
-
+    //解答画面の次の問題屁を押したときの動作
+    document.getElementById("nextBtn").addEventListener('click', () => {
+            displayQuestion();
+    });
 
 
 </script>

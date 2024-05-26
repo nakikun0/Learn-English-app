@@ -59,20 +59,14 @@ def solveQuestions():
 
 @app.route('/rand_q', methods=["POST", "GET"])
 def solving():
-    tempNum = 0
-    num = request.form.get(
-        'questionNum')  # btnを押すたびにsolvingが実行されるため，questionNumが取得できずエラーになる．
-    if num is not None:
-        tempNum = num
-
-    return render_template('testapp/solving.html', num=tempNum, dictData=mydict)
+    num = request.form.get('questionNum')
+    return render_template('testapp/solving.html', num=num, dictData=mydict)
 
 
-@app.route('/TorF', methods=['post'])
+@app.route('/result', methods=["post", "GET"])
 def Check_ans():
-    response = request.form['response']
-    if response == mydict:
-        result = True
-    else:
-        result = False
-    return render_template('testapp/TorF.html', result=result)
+    score = int(request.form.get("CorrectCount"))
+    num = int(request.form.get("questionNum"))
+    accuracy = int(100*score/num)
+    print(f"正解数:{score} 問題数:{num} 正答率:{accuracy}")
+    return render_template('testapp/TorF.html', num=num, score=score, accuracy=accuracy)
