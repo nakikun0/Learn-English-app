@@ -5,3 +5,5 @@
 *.env
 /env/
 *.csv
+En_datas.csv
+Jp_datas.csv
