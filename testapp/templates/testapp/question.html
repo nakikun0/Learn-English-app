@@ -8,7 +8,9 @@
         <button type="submit" id="submitBtn">送信</button>
     </form>
     <p>問題数を半角数字で入力してください</p>
-    <p id="overAlert" style="color:red; display:none;">登録されている単語数以上の問題数は指定できません</p>
+    <p>※問題出題では音声が流れますのでご注意ください</p>
+
+    <p id="overAlert" style="color:red; display:none;">正しい値を入力してください</p>
 </div>
 
 <script>
@@ -21,8 +23,7 @@
     submitBtn.addEventListener("click", (event) => {
         let questionNum = parseInt(questionNumInput.value, 10);
 
-        if (isNaN(questionNum) || questionNum > max) {
-            console.log("ERROR");
+        if (isNaN(questionNum) || questionNum > max || questionNum <= 0) {
             overAlert.style.display = 'block';
             event.preventDefault(); // フォームの送信を防止
         } else {

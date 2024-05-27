@@ -48,6 +48,9 @@
     let QDisplay = document.getElementById("questionDisplay");
     let ADisplay = document.getElementById("ansDisplay");
 
+    let correctAudio = new Audio('static/sounds/Correct.mp3');
+    let wrongAudio = new Audio('static/sounds/WrongBuzzer.mp3');
+
 
     //出題される問題のリストを生成する関数
     function setQuestions(){
@@ -73,11 +76,13 @@
 
     //解答画面の文字を変更する関数 (最後の送信と途中でdivを変えたため)
     function changeText(TorFId, TorF, AnsId, answer){
-        if(TorF)
+        if(TorF){
             document.getElementById(TorFId).textContent = "正解";
-        else
+            correctAudio.play();
+        }else{
             document.getElementById(TorFId).textContent = "不正解";
-        document.getElementById(AnsId).textContent = answer;
+            wrongAudio.play();
+        }document.getElementById(AnsId).textContent = answer;
     }
 
     //解答画面を映す関数

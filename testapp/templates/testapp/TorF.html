@@ -7,18 +7,38 @@
 </style>
 {% extends "layout.html" %}
 {% block content %}
-    <style>
-    </style>
     <div class="container">
         <h3>あなたの点数は</h3>
-        <h2>{{ accuracy }}点</h2>
-        {% if accuracy >= 75 %}
-            <img src="{{ url_for('static', filename='images/DicGOOD.png') }}" alt="DicGOOD" height="175">
-        {% elif 70 > accuracy >= 40 %}
-            <img src="{{ url_for('static', filename='images/DicSoso.png') }}" alt="DicSoso" height="175">
-        {% elif accuracy < 40 %}
-            <img src="{{ url_for('static', filename='images/DicBad.png') }}" alt="DicBad" height="175">
-        {% endif %}
+        <button id="displayBtn" style="display:block;">結果を見る</button>
+        <div id="result" style="display:none;">
+            <h2>{{ accuracy }}点</h2>
+            {% if accuracy >= 75 %}
+                <img src="{{ url_for('static', filename='images/DicGOOD.png') }}" alt="DicGOOD" height="175">
+            {% elif 70 > accuracy >= 40 %}
+                <img src="{{ url_for('static', filename='images/DicSoso.png') }}" alt="DicSoso" height="175">
+            {% elif accuracy < 40 %}
+                <img src="{{ url_for('static', filename='images/DicBad.png') }}" alt="DicBad" height="175">
+            {% endif %}
+        </div>
     </div>
+    <script>
+        let audio;
+        const accuracy = {{ accuracy }};
+
+        if(accuracy >= 75)
+            audio = new Audio('static/sounds/GOOD2.mp3');
+        else if(accuracy < 75 && accuracy >= 40)
+            audio = new Audio('static/sounds/Soso.mp3');
+        else
+            audio = new Audio('static/sounds/Bad.mp3');
+
+        document.getElementById("displayBtn").addEventListener("click", () => {
+            document.getElementById("result").style.display = "block";
+            document.getElementById("displayBtn").style.display = "none";
+            audio.play();
+        });
+
+
+    </script>
 <!--    <script src="{{ url_for('static', filename='javascript/sample.js') }}"></script> -->
 {% endblock %}   
